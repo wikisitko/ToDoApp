@@ -1,0 +1,20 @@
+﻿@page "/tasks"
+@inject IToDoService TodoService
+    <AuthorizeView>
+        <Authorized>
+            <h3>My tasks</h3>
+            <ul>
+                @foreach (var item in TodoService.myTasks)
+                {
+                    <li>@item.ShortDescription - @item.Description - Due Date: @item.DueDate - Category: @item.Category - Priority: @item.Priority </li>
+                }
+            </ul>
+        </Authorized>
+        <NotAuthorized>
+            <Login></Login>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    @code {
+
+    }
