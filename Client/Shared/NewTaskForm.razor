@@ -2,6 +2,7 @@
 @inject IToDoService TodoService
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IToastService Toast
 
 <h2>Add new task</h2>
 
@@ -45,10 +46,10 @@
     private void OnSubmitTask()
     {
         TodoService.AddTask(task);
-        NavigationManager.NavigateTo("newtask"); //nie odswieza sie form
+        TodoService.GetTasks();
+        task = new ToDo();
+        NavigationManager.NavigateTo("newtask"); //nie odswieza sie form...
     }
-
-
 
 
 }

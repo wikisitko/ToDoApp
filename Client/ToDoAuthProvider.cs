@@ -5,22 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ToDoApp.Client.Services;
 
 namespace ToDoApp.Client
 {
     public class ToDoAuthProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService localStorage;
+        private readonly IToDoService toDoService;
 
-        public ToDoAuthProvider(ILocalStorageService localStorage)
+        public ToDoAuthProvider(ILocalStorageService localStorage, IToDoService toDoService)
         {
             this.localStorage = localStorage;
+            this.toDoService = toDoService;
         }
 
         //ta metoda stwierdza czy ma zalogowac uzytkownika czy nie
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var state = new AuthenticationState(new ClaimsPrincipal()); //uzytkownik nieuwiezytelniony
+            var state = new AuthenticationState(new ClaimsPrincipal()); //uzytkownik nieuwierzytelniony
 
             if (await localStorage.GetItemAsync<bool>("isAuth"))
             {
@@ -31,6 +34,7 @@ namespace ToDoApp.Client
                 new Claim(ClaimTypes.Email, "wiki@gmail.com"),
                 }, "test identity");
                 state = new AuthenticationState(new ClaimsPrincipal(identity));
+                await toDoService.GetTasks();
             }
 
             NotifyAuthenticationStateChanged(Task.FromResult(state));

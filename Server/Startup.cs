@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using ToDoApp.Server.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ToDoApp.Server
 {
@@ -22,7 +24,7 @@ namespace ToDoApp.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connection")));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

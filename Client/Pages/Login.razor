@@ -24,6 +24,6 @@
     {
         await LocalStorage.SetItemAsync<bool>("isAuth", true);
         await AuthProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("home");
+        NavigationManager.NavigateTo("newtask");
     }
 }

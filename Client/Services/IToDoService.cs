@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ToDoApp.Shared;
 
 namespace ToDoApp.Client.Services
@@ -8,6 +10,8 @@ namespace ToDoApp.Client.Services
         IReadOnlyList<string> CategoryList { get; }
         List<ToDo> myTasks { get; }
 
-        void AddTask(ToDo task);
+        Task AddTask(ToDo task);
+        Task GetTasks();
+        event Action OnToDoSLoaded;
     }
 }

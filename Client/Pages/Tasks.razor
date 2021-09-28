@@ -17,4 +17,15 @@
 
     @code {
 
-    }
+        protected override async void OnInitialized()
+        {
+            await TodoService.GetTasks();
+        }
+
+        //protected override void OnInitialized()
+        //{
+        //    //w momencie jak wykona sie event OnToDoLoaded to metoda StateHasChanged zostanie uruchomiona i odswiezy ten komponent
+        //    TodoService.OnToDoSLoaded += StateHasChanged;
+        //    TodoService.GetTasks();
+        //}
+}

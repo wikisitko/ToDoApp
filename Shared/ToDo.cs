@@ -9,6 +9,7 @@ namespace ToDoApp.Shared
 {
     public class ToDo
     {
+        public int Id { get; set; }
         [StringLength(20, ErrorMessage = "Short description is too long. Use field description instead"), Required]
         public string ShortDescription { get; set; }
         [Required, StringLength(200, MinimumLength = 10)]
