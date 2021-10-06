@@ -60,7 +60,7 @@
     }
     private async void Logout()
     {
-        await LocalStorage.RemoveItemAsync("isAuth");
+        await LocalStorage.RemoveItemAsync("token");
         await AuthenticationStateProvider.GetAuthenticationStateAsync();
     }
 }

@@ -36,6 +36,5 @@ namespace ToDoApp.Client.Services
             myTasks = await http.GetFromJsonAsync<List<ToDo>>("api/ToDo"); //wysyla zapytanie na backend w celu pobrania zadan
             OnToDoSLoaded?.Invoke();
         }
-
     }
 }

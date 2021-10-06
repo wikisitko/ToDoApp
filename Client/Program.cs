@@ -26,6 +26,7 @@ namespace ToDoApp.Client
             builder.Services.AddScoped<AuthenticationStateProvider, ToDoAuthProvider>();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredToast();
 
