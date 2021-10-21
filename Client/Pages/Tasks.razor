@@ -3,12 +3,26 @@
     <AuthorizeView>
         <Authorized>
             <h3>My tasks</h3>
-            <ul>
-                @foreach (var item in TodoService.myTasks)
-                {
-                    <li>@item.ShortDescription - @item.Description - Due Date: @item.DueDate - Category: @item.Category - Priority: @item.Priority </li>
-                }
-            </ul>
+            @if (TodoService.myTasks != null)
+            {
+                <table class="table table-striped">
+                    @foreach (var item in TodoService.myTasks)
+                    {
+                        <tr>
+                            <td>@item.ShortDescription</td>
+                            <td>@item.Description</td>
+                            <td>@item.DueDate</td>
+                            <td>@item.Category</td>
+                            <td>@item.Priority</td>
+
+                            @*Jesli chcesz przekazac jakas funkcje ktora potrzebuje wpisania parametru to mozesz to zrobic za pomoca wyrazenia lambda
+                        o wyrazenie tworzy funkcje ktora wywola pozniej twoja funkcje zdefiniowana po =>*@
+                            <td><button class="btn btn-danger" @onclick="() => DeleteTask(item.Id)">Usuń</button></td>
+                        </tr>
+                    }
+                </table>
+            }
+
         </Authorized>
         <NotAuthorized>
             <Login></Login>
@@ -19,8 +33,17 @@
 
         protected override async void OnInitialized()
         {
+            TodoService.OnToDoSLoaded += StateHasChanged;
             await TodoService.GetTasks();
         }
+        
+        private async Task DeleteTask(int id)
+        {
+            await TodoService.DeleteTask(id);
+            await TodoService.LoadTasksAsync();
+            StateHasChanged();
+        }
+
 
         //protected override void OnInitialized()
         //{

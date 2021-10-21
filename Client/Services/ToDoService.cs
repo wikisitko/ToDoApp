@@ -24,17 +24,38 @@ namespace ToDoApp.Client.Services
             this.toastService = toastService;
             this.http = http;
         }
-        public async Task AddTask(ToDo task)
+        public async Task LoadTasksAsync()
         {
-            await http.PostAsJsonAsync("api/ToDo", task);
-            toastService.ShowSuccess($"Task added!", "Great!");
-            await GetTasks();
+            myTasks = await http.GetFromJsonAsync<List<ToDo>>("api/ToDo/tasks");
+        }
+        public async Task AddTask(ToDoForm task)
+        {
+            var response = await http.PostAsJsonAsync("api/ToDo", task);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                toastService.ShowSuccess($"Task added!", "Great!");
+                await GetTasks();
+            }
         }
 
         public async Task GetTasks()
         {
-            myTasks = await http.GetFromJsonAsync<List<ToDo>>("api/ToDo"); //wysyla zapytanie na backend w celu pobrania zadan
+            myTasks = await http.GetFromJsonAsync<List<ToDo>>("api/ToDo/tasks"); //wysyla zapytanie na backend w celu pobrania zadan
             OnToDoSLoaded?.Invoke();
+        }
+
+        public async Task DeleteTask(int taskId)
+        {
+            var result = await http.DeleteAsync($"api/ToDo/task/{taskId}");
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                toastService.ShowSuccess("Order removed!", "Success");
+                await LoadTasksAsync();
+            }
+            else
+            {
+                toastService.ShowError(await result.Content.ReadAsStringAsync(), "Error");
+            }
         }
     }
 }

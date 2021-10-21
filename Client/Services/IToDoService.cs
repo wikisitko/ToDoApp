@@ -10,8 +10,10 @@ namespace ToDoApp.Client.Services
         IReadOnlyList<string> CategoryList { get; }
         List<ToDo> myTasks { get; }
 
-        Task AddTask(ToDo task);
-        Task GetTasks();
+        public Task AddTask(ToDoForm task);
+        public Task GetTasks();
         event Action OnToDoSLoaded;
+        public Task DeleteTask(int taskId);
+        public Task LoadTasksAsync();
     }
 }

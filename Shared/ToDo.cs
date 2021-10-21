@@ -19,6 +19,7 @@ namespace ToDoApp.Shared
         public DateTime DueDate { get; set; }
         public string Category { get; set; }
         public bool IfDone { get; set; }
+        public User User { get; set; }
 
     }
 }

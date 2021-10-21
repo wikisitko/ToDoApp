@@ -30,6 +30,18 @@ namespace ToDoApp.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<IAuthRepository, AuthRepository>();
+
+            //ten kod jest potrzeby do uwierzytelniania zapytan z tokenami (JWT)
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)), //na podstawie danych z appsettings.json generuje klucz do szyfrowania/deszyfrowania tokenow
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +64,9 @@ namespace ToDoApp.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
