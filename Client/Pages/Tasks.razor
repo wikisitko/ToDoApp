@@ -3,10 +3,31 @@
     <AuthorizeView>
         <Authorized>
             <h3>My tasks</h3>
-            @if (TodoService.myTasks != null)
+
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <select @bind="@category" class="form-control">
+                                <option value="-1">All</option>
+                                @foreach (var item in Enum.GetValues(typeof(TaskCategory)))
+                                {
+                                    <option value="@((int)item)">@item</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="FilterTasks"><span class="oi oi-fork"></span></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+           
+
+            @if (tasks != null)
             {
                 <table class="table table-striped">
-                    @foreach (var item in TodoService.myTasks)
+                    @foreach (var item in tasks)
                     {
                         <tr>
                             <td>@item.ShortDescription</td>
@@ -30,13 +51,20 @@
     </AuthorizeView>
 
     @code {
-
+        private int category; //? przy typie danych oznacza ze bedzie on mogl przechowywac rowniez null tyczy sie to glownie typow prostych np int oraz enum
+        private List<ToDo> tasks;
         protected override async void OnInitialized()
         {
-            TodoService.OnToDoSLoaded += StateHasChanged;
+            TodoService.OnToDoSLoaded += UpdateTasks;
             await TodoService.GetTasks();
         }
-        
+
+        public void UpdateTasks()
+        {
+            tasks = TodoService.myTasks;
+            StateHasChanged();
+        }
+
         private async Task DeleteTask(int id)
         {
             await TodoService.DeleteTask(id);
@@ -44,6 +72,11 @@
             StateHasChanged();
         }
 
+        private void FilterTasks()
+        {
+            tasks = category == -1 ? TodoService.myTasks : TodoService.myTasks.FindAll(x => x.Category == (TaskCategory)category);
+            StateHasChanged();
+        }
 
         //protected override void OnInitialized()
         //{

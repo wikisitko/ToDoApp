@@ -7,7 +7,6 @@ namespace ToDoApp.Client.Services
 {
     public interface IToDoService
     {
-        IReadOnlyList<string> CategoryList { get; }
         List<ToDo> myTasks { get; }
 
         public Task AddTask(ToDoForm task);

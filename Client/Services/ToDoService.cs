@@ -18,7 +18,6 @@ namespace ToDoApp.Client.Services
 
         public List<ToDo> myTasks { get; set; } = new List<ToDo>();
 
-        public IReadOnlyList<string> CategoryList { get; } = new List<string>() { "Work", "Learn", "Home", "Other" };
         public ToDoService(IToastService toastService, HttpClient http)
         {
             this.toastService = toastService;

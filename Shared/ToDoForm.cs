@@ -17,7 +17,7 @@ namespace ToDoApp.Shared
         public int Priority { get; set; }
         [FromNow]
         public DateTime DueDate { get; set; } = DateTime.Now;
-        public string Category { get; set; }
+        public TaskCategory Category { get; set; }
         public bool IfDone { get; set; }
 
     }

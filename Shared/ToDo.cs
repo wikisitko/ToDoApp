@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ToDoApp.Shared
 {
+    public enum TaskCategory { Work, Home, Learn, Other }
     public class ToDo
     {
         public int Id { get; set; }
@@ -17,7 +18,7 @@ namespace ToDoApp.Shared
         [Range(1, 4)]
         public int Priority { get; set; }
         public DateTime DueDate { get; set; }
-        public string Category { get; set; }
+        public TaskCategory Category { get; set; } = TaskCategory.Other;
         public bool IfDone { get; set; }
         public User User { get; set; }
 

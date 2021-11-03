@@ -32,9 +32,9 @@
     <div class="form-group">
         <label for="type">What is the category of task?</label>
         <InputSelect id="type" @bind-Value="task.Category" class="form-control">
-            @for (int i = 0; i < TodoService.CategoryList.Count; i++)
+            @foreach (var category in Enum.GetValues(typeof(TaskCategory)))
             {
-                <option value="@i">@TodoService.CategoryList[i]</option>
+                <option value="@category">@category</option>
             }
         </InputSelect>
     </div>
