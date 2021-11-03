@@ -5,7 +5,7 @@
 @inject IAuthService AuthService
 @inject IToastService ToastService
 
-<h3>Login</h3>
+<h3>Zaloguj się</h3>
 
 <EditForm Model="user" OnValidSubmit="OnSubmitLogin">
     <div>
@@ -13,7 +13,7 @@
         <InputText id="email" @bind-Value="user.Email" class="form-control"></InputText>
     </div>
     <div>
-        <label for="password">Password</label>
+        <label for="password">Hasło</label>
         <InputText id="password" @bind-Value="user.Password" type="password" class="form-control"></InputText>
     </div>
     <button type="submit" class="btn btn-success">Go!</button>
@@ -27,14 +27,14 @@
         var response = await AuthService.Login(user);
         if (response.Success)
         {
-            ToastService.ShowSuccess(response.Message, "Success");
+            ToastService.ShowSuccess(response.Message, "Sukces!");
             await LocalStorage.SetItemAsStringAsync("token", response.Data);
             await AuthProvider.GetAuthenticationStateAsync(); //???
             NavigationManager.NavigateTo("newtask");
         }
         else
         {
-            ToastService.ShowSuccess(response.Message, "Error");
+            ToastService.ShowSuccess(response.Message, "Błąd");
         }
 
     }

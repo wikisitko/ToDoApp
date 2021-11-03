@@ -2,7 +2,7 @@
 @inject IToDoService TodoService
     <AuthorizeView>
         <Authorized>
-            <h3>My tasks</h3>
+            <h3>Moje ToDo</h3>
 
             <div>
                 <table>
@@ -17,32 +17,43 @@
                             </select>
                         </td>
                         <td>
-                            <button class="btn btn-primary" @onclick="FilterTasks"><span class="oi oi-fork"></span></button>
+                            <button class="btn btn-primary" @onclick="FilterTasks"><span>✔</span></button>
                         </td>
                     </tr>
                 </table>
             </div>
            
 
-            @if (tasks != null)
-            {
-                <table class="table table-striped">
-                    @foreach (var item in tasks)
-                    {
-                        <tr>
-                            <td>@item.ShortDescription</td>
-                            <td>@item.Description</td>
-                            <td>@item.DueDate</td>
-                            <td>@item.Category</td>
-                            <td>@item.Priority</td>
+       @if (tasks != null)
+        {
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Tytuł</th>
+                    <th scope="col">Opis</th>
+                    <th scope="col">Termin</th>
+                    <th scope="col">Kategoria</th>
+                    <th scope="col">Priorytet</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in tasks)
+                {
+                    <tr>
+                        <td>@item.ShortDescription</td>
+                        <td>@item.Description</td>
+                        <td>@item.DueDate</td>
+                        <td>@item.Category</td>
+                        <td>@item.Priority</td>
 
-                            @*Jesli chcesz przekazac jakas funkcje ktora potrzebuje wpisania parametru to mozesz to zrobic za pomoca wyrazenia lambda
-                        o wyrazenie tworzy funkcje ktora wywola pozniej twoja funkcje zdefiniowana po =>*@
-                            <td><button class="btn btn-danger" @onclick="() => DeleteTask(item.Id)">Usuń</button></td>
-                        </tr>
-                    }
-                </table>
-            }
+                        @*Jesli chcesz przekazac jakas funkcje ktora potrzebuje wpisania parametru to mozesz to zrobic za pomoca wyrazenia lambda
+                o wyrazenie tworzy funkcje ktora wywola pozniej twoja funkcje zdefiniowana po =>*@
+                        <td><button class="btn btn-danger" @onclick="() => DeleteTask(item.Id)">Usuń</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
 
         </Authorized>
         <NotAuthorized>

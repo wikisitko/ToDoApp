@@ -9,28 +9,28 @@
 <EditForm Model="task" OnValidSubmit="OnSubmitTask">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <div class="form-group">
-        <label for="shortDescription" class="required">Short description</label>
+        <label for="shortDescription" class="required">Tytuł</label>
         <InputText id="shortDescription" @bind-Value="task.ShortDescription" class="form-control"></InputText>
         <ValidationMessage For="@(() => task.ShortDescription)"></ValidationMessage>
     </div>
     <div class="form-group">
-        <label for="description" class="required">Full description of the task</label>
+        <label for="description" class="required">Opis</label>
         <InputTextArea id="description" @bind-Value="task.Description" class="form-control"></InputTextArea>
         <ValidationMessage For="@(() => task.Description)"></ValidationMessage>
 
     </div>
     <div class="form-group">
-        <label for="priority" class="required">What is the priority of your task? </label>
+        <label for="priority" class="required">Priorytet</label>
         <InputNumber id="priority" @bind-Value="task.Priority" class="form-control"></InputNumber>
         <ValidationMessage For="@(() => task.Priority)"></ValidationMessage>
     </div>
     <div class="form-group">
-        <label for="dueDate">What is the due date?</label>
+        <label for="dueDate">Termin wykonania</label>
         <InputDate id="dueDate" @bind-Value="task.DueDate" class="form-control"></InputDate>
         <ValidationMessage For="@(() => task.DueDate)"></ValidationMessage>
     </div>
     <div class="form-group">
-        <label for="type">What is the category of task?</label>
+        <label for="type">Kategoria</label>
         <InputSelect id="type" @bind-Value="task.Category" class="form-control">
             @foreach (var category in Enum.GetValues(typeof(TaskCategory)))
             {
@@ -38,7 +38,7 @@
             }
         </InputSelect>
     </div>
-    <button type="submit" class="btn btn-success">Add</button>
+    <button type="submit" class="btn btn-outline-info">Dodaj</button>
 </EditForm>
 
 

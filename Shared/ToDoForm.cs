@@ -9,7 +9,7 @@ namespace ToDoApp.Shared
 {
     public class ToDoForm
     {
-        [StringLength(20, ErrorMessage = "Short description is too long. Use field description instead"), Required]
+        [StringLength(20, ErrorMessage = "Tytuł jest zbyt długi"), Required]
         public string ShortDescription { get; set; }
         [Required, StringLength(200, MinimumLength = 10)]
         public string Description { get; set; }
