@@ -17,7 +17,7 @@ namespace ToDoApp.Shared
         public string Password { get; set; }
         [Required, Compare("Password", ErrorMessage = "Passwords are not the same.")]
         public string PasswordConfirm { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; } = DateTime.Now;
         [Range(typeof(bool), "true", "true", ErrorMessage = "Confirm")]
         public bool Confirmation { get; set; }
     }

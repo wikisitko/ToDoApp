@@ -3,7 +3,7 @@
 @inject IAuthService AuthService
 @inject IToastService ToastService
 
-<h3>Zarejestruj się</h3>
+@*<h3>Zarejestruj się</h3>
 <EditForm Model="user" OnValidSubmit="OnSubmitRegistration">
     <div class="form-group">
         <label for="email" class="required">Email</label>
@@ -35,6 +35,60 @@
         <ValidationMessage For="@(() => user.Confirmation)"></ValidationMessage>
     </div>
     <button type="submit" class="btn btn-success">Idź!</button>
+</EditForm>*@
+
+<EditForm Model="user" OnValidSubmit="OnSubmitRegistration">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100" style="">
+                <div class="">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body p-xl-5 text-center" style="width: 500px;">
+
+                            <h3 class="mb-5">Zarejestruj się</h3>
+
+                            <div class="form-outline mb-4">
+                                <InputText id="email" @bind-Value="user.Email" class="form-control form-control-lg"></InputText>
+                                <label for="email" class="required form-label">Email</label>
+
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <InputText id="username" @bind-Value="user.Username" class="form-control form-control-lg"></InputText>
+                                <ValidationMessage For="@(() => user.Username)"></ValidationMessage>
+                                <label for="username" class="required form-label">Login</label>
+
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <InputText id="password" @bind-Value="user.Password" type="password" class="form-control form-control-lg"></InputText>
+                                <ValidationMessage For="@(() => user.Password)"></ValidationMessage>
+                                <label for="password" class="required form-label">Hasło</label>
+
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <InputText id="confirmPassword" @bind-Value="user.PasswordConfirm" type="password" class="form-control form-control-lg"></InputText>
+                                <ValidationMessage For="@(() => user.PasswordConfirm)"></ValidationMessage>
+                                <label for="confirmPassword" class="required form-label">Potwierdź hasło</label>
+
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <InputDate id="dateOfBirth" @bind-Value="user.DateOfBirth" class="form-control form-control-lg"></InputDate>
+                                <label class="required form-label" for="dateOfBirth">Data urodzenia</label>
+                            </div>
+
+                            <div class="form-group form-check">
+                                <InputCheckbox id="confirmation" @bind-Value="user.Confirmation" class="form-check-input"></InputCheckbox>
+                                <label for="confirmation" class="required form-check-label">Akceptuję regulamin serwisu.</label>
+                                <ValidationMessage For="@(() => user.Confirmation)"></ValidationMessage>
+                            </div>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Załóż konto</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </EditForm>
 
 @code {
