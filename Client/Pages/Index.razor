@@ -1,4 +1,8 @@
-﻿@page "/"
+﻿@page "/scheduler"
+@inject DialogService Dialog
+@inject NotificationService NotificationService
+
+<RadzenButton Text="Hi" Click="@Clicked"></RadzenButton>
 
 <div class="container-fluid">
     <header>
@@ -375,3 +379,14 @@
     </div>
 </div>
 
+@code 
+{
+    private async void Clicked()
+    {
+        bool? wynik = await Dialog.Confirm("Czy zatiwerdzasz?", "Potwierdzenie");
+        if(wynik == true)
+        {
+            NotificationService.Notify(detail: "OK");
+        }
+    }
+}

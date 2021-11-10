@@ -19,7 +19,7 @@ namespace ToDoApp.Shared
         public int Priority { get; set; }
         public DateTime DueDate { get; set; }
         public TaskCategory Category { get; set; } = TaskCategory.Inne;
-        public bool IfDone { get; set; }
+        public bool IfDone { get; set; } = false;
         public User User { get; set; }
 
     }

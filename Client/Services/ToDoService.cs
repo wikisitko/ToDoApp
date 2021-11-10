@@ -26,6 +26,7 @@ namespace ToDoApp.Client.Services
         public async Task LoadTasksAsync()
         {
             myTasks = await http.GetFromJsonAsync<List<ToDo>>("api/ToDo/tasks");
+            OnToDoSLoaded?.Invoke();
         }
         public async Task AddTask(ToDoForm task)
         {
@@ -48,7 +49,21 @@ namespace ToDoApp.Client.Services
             var result = await http.DeleteAsync($"api/ToDo/task/{taskId}");
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                toastService.ShowSuccess("Order removed!", "Success");
+                toastService.ShowSuccess("Task removed!", "Success");
+                await LoadTasksAsync();
+            }
+            else
+            {
+                toastService.ShowError(await result.Content.ReadAsStringAsync(), "Error");
+            }
+        }
+
+        public async Task TaskDone(int taskId)
+        {
+            var result = await http.PutAsJsonAsync("api/ToDo/task-done/", taskId); //put czy post
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                toastService.ShowSuccess("Task done", "Success");
                 await LoadTasksAsync();
             }
             else

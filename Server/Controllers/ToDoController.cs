@@ -61,6 +61,7 @@ namespace ToDoApp.Server.Controllers
         [HttpDelete("task/{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
+            //TODO: dodac walidacje czy zadanie nalezy do uzytkownika ktory robi zapytanie
             ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
             if(toDo == null)
             {
@@ -71,5 +72,21 @@ namespace ToDoApp.Server.Controllers
             await dataContext.SaveChangesAsync();
             return Ok("Removed");
         }
+
+        [HttpPut("task-done")]
+        public async Task<IActionResult> ItemDone([FromBody]int id)
+        {
+            //TODO: dodac walidacje czy zadanie nalezy do uzytkownika ktory robi zapytanie
+            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+            if (toDo == null)
+            {
+                return NotFound("task not found");
+            }
+
+            toDo.IfDone = true;
+            await dataContext.SaveChangesAsync();
+            return Ok("Done");
+        }
+
     }
 }
