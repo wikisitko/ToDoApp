@@ -14,7 +14,7 @@ namespace ToDoApp.Client.Services
         event Action OnToDoSLoaded;
         public Task DeleteTask(int taskId);
         public Task LoadTasksAsync();
-        public Task TaskDone(int taskId);
+        public Task TaskDone(int taskId, bool done);
 
     }
 }

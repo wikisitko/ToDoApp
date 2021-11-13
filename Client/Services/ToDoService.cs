@@ -58,9 +58,10 @@ namespace ToDoApp.Client.Services
             }
         }
 
-        public async Task TaskDone(int taskId)
+        public async Task TaskDone(int taskId, bool done)
         {
-            var result = await http.PutAsJsonAsync("api/ToDo/task-done/", taskId); //put czy post
+            var request = new DoneRequest() { TaskId = taskId, Done = done };   
+            var result = await http.PutAsJsonAsync("api/ToDo/task-done/", request); //put czy post
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 toastService.ShowSuccess("Task done", "Success");

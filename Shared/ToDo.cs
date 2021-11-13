@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ToDoApp.Shared
 {
-    public enum TaskCategory { Praca, Dom, Nauka, Inne }
+    public enum TaskCategory { All, Praca, Dom, Nauka, Inne }
     public class ToDo
     {
         public int Id { get; set; }

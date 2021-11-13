@@ -74,10 +74,13 @@ namespace ToDoApp.Server.Controllers
         }
 
         [HttpPut("task-done")]
-        public async Task<IActionResult> ItemDone([FromBody]int id)
+        //public async Task<IActionResult> ItemDone([FromBody]int id)
+        public async Task<IActionResult> ItemDone(DoneRequest doneRequest)
         {
             //TODO: dodac walidacje czy zadanie nalezy do uzytkownika ktory robi zapytanie
-            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+            //        ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id, x => x.Done == done);
+
+            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == doneRequest.TaskId && x.IfDone == doneRequest.Done);
             if (toDo == null)
             {
                 return NotFound("task not found");
@@ -86,6 +89,7 @@ namespace ToDoApp.Server.Controllers
             toDo.IfDone = true;
             await dataContext.SaveChangesAsync();
             return Ok("Done");
+
         }
 
     }
