@@ -61,34 +61,42 @@ namespace ToDoApp.Server.Controllers
         [HttpDelete("task/{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
+            var user = await GetUser();
+
             //TODO: dodac walidacje czy zadanie nalezy do uzytkownika ktory robi zapytanie
-            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
-            if(toDo == null)
-            {
-                return NotFound("task not found");
-            }
+            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id && x.User.Id == user.Id);
+                if (toDo == null)
+                {
+                    return NotFound("task not found");
+                }
+
+                dataContext.Remove(toDo);
+                await dataContext.SaveChangesAsync();
+                return Ok("Removed");
             
-            dataContext.Remove(toDo);
-            await dataContext.SaveChangesAsync();
-            return Ok("Removed");
         }
 
         [HttpPut("task-done")]
         //public async Task<IActionResult> ItemDone([FromBody]int id)
         public async Task<IActionResult> ItemDone(DoneRequest doneRequest)
         {
+            var user = await GetUser();
+
             //TODO: dodac walidacje czy zadanie nalezy do uzytkownika ktory robi zapytanie
             //        ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == id, x => x.Done == done);
 
-            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == doneRequest.TaskId && x.IfDone == doneRequest.Done);
-            if (toDo == null)
-            {
-                return NotFound("task not found");
-            }
+            ToDo toDo = await dataContext.Tasks.FirstOrDefaultAsync(x => x.Id == doneRequest.TaskId && x.User.Id == user.Id);
 
-            toDo.IfDone = true;
-            await dataContext.SaveChangesAsync();
-            return Ok("Done");
+                if (toDo == null)
+                {
+                    return NotFound("task not found");
+                }
+
+                toDo.IfDone = doneRequest.Done;
+                await dataContext.SaveChangesAsync();
+                return Ok("Done");
+
+                
 
         }
 
