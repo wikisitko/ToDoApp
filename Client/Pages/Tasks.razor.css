@@ -1,0 +1,6 @@
+﻿body {
+}
+
+#flexCheckDefault:checked + label {
+    text-decoration: line-through;
+}

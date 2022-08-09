@@ -1,0 +1,129 @@
+﻿@page "/tasks"
+@inject IToDoService TodoService
+@inject IJSRuntime JS
+
+<AuthorizeView>
+    <Authorized>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <select @bind="@category" class="form-control">
+                            @foreach (var item in Enum.GetValues(typeof(TaskCategory)))
+                            {
+                                <option value="@((int)item)">@item</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="FilterTasks"><span>✔</span></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        @if (tasks != null)
+        {
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">    </th>
+                        <th scope="col">Tytuł</th>
+                        <th scope="col">Opis</th>
+                        <th scope="col">Termin</th>
+                        <th scope="col">Kategoria</th>
+                        <th scope="col">Priorytet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in tasks)
+                    {
+                        <tr name="@item.IfDone.ToString()" style="@crossOut(item.IfDone)">
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @bind="@item.IfDone" id="flexCheckDefault" @onclick="() => TaskDone(item.Id, !item.IfDone)" />
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>@item.ShortDescription</td>
+                            <td>@item.Description</td>
+                            <td>@item.DueDate</td>
+                            <td>@item.Category</td>
+                            <td>@item.Priority</td>
+
+                            @*Jesli chcesz przekazac jakas funkcje ktora potrzebuje wpisania parametru to mozesz to zrobic za pomoca wyrazenia lambda
+                                o wyrazenie tworzy funkcje ktora wywola pozniej twoja funkcje zdefiniowana po =>*@
+                            <td><i style="cursor: pointer;" class="bi bi-trash-fill" @onclick="() => DeleteTask(item.Id)"/></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <Login></Login>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private int category; //? przy typie danych oznacza ze bedzie on mogl przechowywac rowniez null tyczy sie to glownie typow prostych np int oraz enum
+    private List<ToDo> tasks;
+    protected override async void OnInitialized()
+    {
+        TodoService.OnToDoSLoaded += UpdateTasks;
+        await TodoService.GetTasks();
+    }
+
+    private string crossOut(bool done)
+    {
+        return done ? "text-decoration: line-through;" : "text-decoration: none";
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            //await JS.InvokeVoidAsync("crossOut");
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+    public void UpdateTasks()
+    {
+        tasks = TodoService.myTasks;
+        StateHasChanged();
+        JS.InvokeVoidAsync("crossOut");
+
+    }
+
+    private async Task DeleteTask(int id)
+    {
+        await TodoService.DeleteTask(id);
+        await TodoService.LoadTasksAsync();
+        StateHasChanged();
+    }
+
+    private void FilterTasks()
+    {
+        tasks = category == 0 ? TodoService.myTasks : TodoService.myTasks.FindAll(x => x.Category == (TaskCategory)category);
+        StateHasChanged();
+    }
+
+    private async Task TaskDone(int id, bool done)
+    {
+        await TodoService.TaskDone(id, done);
+        await TodoService.LoadTasksAsync();
+        StateHasChanged();
+    }
+
+    //protected override void OnInitialized()
+    //{
+    //    //w momencie jak wykona sie event OnToDoLoaded to metoda StateHasChanged zostanie uruchomiona i odswiezy ten komponent
+    //    TodoService.OnToDoSLoaded += StateHasChanged;
+    //    TodoService.GetTasks();
+    //}
+}

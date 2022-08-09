@@ -1,0 +1,10 @@
+﻿@page "/newtask"
+
+<AuthorizeView>
+    <Authorized>
+        <NewTaskForm></NewTaskForm>
+    </Authorized>
+    <NotAuthorized>
+        <Login></Login>
+    </NotAuthorized>
+</AuthorizeView>
